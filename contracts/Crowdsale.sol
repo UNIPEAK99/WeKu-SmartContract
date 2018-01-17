@@ -15,6 +15,7 @@ contract Crowdsale {
     mapping(address => uint256) public balanceOf;
     bool fundingGoalReached = false;
     bool crowdsaleClosed = false;
+    uint deployedTime;
 
     event GoalReached(address recipient, uint totalAmountRaised);
     event FundTransfer(address backer, uint amount, bool isContribution);
@@ -35,6 +36,7 @@ contract Crowdsale {
         fundingGoal = fundingGoalInEthers * 1 ether;
         deadline = now + durationInMinutes * 1 minutes;
         price = etherCostOfEachToken * 1 ether;
+        deployedTime = now;
         tokenReward = token(addressOfTokenUsedAsReward);
     }
 
@@ -48,7 +50,13 @@ contract Crowdsale {
         uint amount = msg.value;
         balanceOf[msg.sender] += amount;
         amountRaised += amount;
-        tokenReward.transfer(msg.sender, amount / price);
+
+        // first 1 -15 days, the price is 10% off.
+        if(now <= deployedTime + 15 days)
+            tokenReward.transfer(msg.sender, amount / (price * 100 / 110));
+        else
+            tokenReward.transfer(msg.sender, amount / price);
+
         FundTransfer(msg.sender, amount, true);
     }
 
