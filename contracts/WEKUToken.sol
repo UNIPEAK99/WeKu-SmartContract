@@ -257,6 +257,12 @@ contract WEKUToken is owned, TokenERC20 {
     }
     */
 
+    function assignToEarlyBirds(address[] earlyBirds, uint256 amount) onlyOwner public {
+        require(amount > 0);
+        for (uint i = 0; i < earlyBirds.length; i++)
+            _transfer(msg.sender, earlyBirds[i], amount);
+    }
+
     // internal functions
 
     /* Internal transfer, only can be called by this contract */

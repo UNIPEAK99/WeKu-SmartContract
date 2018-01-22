@@ -1,21 +1,16 @@
-//var expect      = require('chai').expect;
 var WEKUToken = artifacts.require("./WEKUToken.sol");
 
 contract('WEKUToken', function(accounts) {
  
-  var meta;
-  const initSupply = 400;
-  const tokenSymbol = "WEKU";
-  const tokenName = "WEKU Token";
+  var meta;  
 
   const ownerAccount = accounts[0];
-  const founderAccount = accounts[1]; //0x6f003229ec072c5d017bd28e834f59ad914aacb0;
+  const founderAccount = accounts[1]; 
 
   before(async function() {    
 
     try{
-      meta = await WEKUToken.new(founderAccount); //.deployed(); //.new(accounts[1]);
-      console.log("OK");
+      meta = await WEKUToken.new(founderAccount); 
     }catch(err){
       console.log(err);
     }
@@ -23,8 +18,6 @@ contract('WEKUToken', function(accounts) {
   });
 
   it("should have intialized correctly", async function() {   
-      console.log("start");
-
       const symbol = await meta.symbol.call();
       const name = await meta.name.call();      
       const ownerBalance = await meta.balanceOf.call(ownerAccount);
@@ -32,8 +25,8 @@ contract('WEKUToken', function(accounts) {
     
       //console.log(name);
       //console.log(symbol);
-      console.log(ownerBalance);
-      console.log(founderBalance);
+      //console.log(ownerBalance);
+      //console.log(founderBalance);
 
       assert.equal(symbol, "WEKU", "token symbol isn't correct");
       assert.equal(name, "WEKU Token", "token name isnt correct");
@@ -49,9 +42,9 @@ contract('WEKUToken', function(accounts) {
       await meta.transfer(accounts[2], over_25_percent_amount, {from: founderAccount});
     }catch(err){
       //assert.include(err, "VM Exception while processing transaction", "No able to limit founder to withdraw");
-      console.log('==== error ====');
+      //console.log('==== error ====');
       //console.log(err);
-      console.log('==== error ====');
+      console.log('==== error expected ====');
     }    
 
     const founderBalance2 = await meta.balanceOf.call(founderAccount);
@@ -79,6 +72,40 @@ contract('WEKUToken', function(accounts) {
 
     //assert.equal(account_one_ending_balance.toNumber(), account_one_starting_balance.toNumber() - amount, "Amount wasn't correctly taken from the sender");
     assert.equal(account_two_ending_balance.toNumber(), account_two_starting_balance.toNumber() + amount, "Amount wasn't correctly sent to the receiver");
+
+  });
+
+  it("should assign to early birds correctly", async function() {
+
+    // Get initial balances of first and second account.
+    var account_one = accounts[3];
+    var account_two = accounts[4];
+    var account_three = accounts[5];
+
+    var earlyBirds = [account_one, account_two, account_three];
+
+    var account_one_starting_balance;
+    var account_two_starting_balance;
+    var account_three_starting_balance;
+    var account_one_ending_balance;
+    var account_two_ending_balance;
+    var account_three_ending_balance;
+
+    var amount = 1.0e+20;
+
+    account_one_starting_balance =  await meta.balanceOf.call(account_one);    
+    account_two_starting_balance = await meta.balanceOf.call(account_two);
+    account_three_starting_balance = await meta.balanceOf.call(account_three);
+
+    await meta.assignToEarlyBirds(earlyBirds, amount);
+
+    account_one_ending_balance =  await meta.balanceOf.call(account_one);    
+    account_two_ending_balance = await meta.balanceOf.call(account_two);
+    account_three_ending_balance = await meta.balanceOf.call(account_three);
+
+    assert.equal(account_one_ending_balance.toNumber(), account_one_starting_balance.toNumber() + amount, "Amount wasn't correctly sent to the account one");
+    assert.equal(account_two_ending_balance.toNumber(), account_two_starting_balance.toNumber() + amount, "Amount wasn't correctly sent to the account two");
+    assert.equal(account_three_ending_balance.toNumber(), account_three_starting_balance.toNumber() + amount, "Amount wasn't correctly sent to the account three");
 
   });
 
