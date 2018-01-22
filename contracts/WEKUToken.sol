@@ -174,7 +174,10 @@ contract TokenERC20 {
 /******************************************/
 
 contract WEKUToken is owned, TokenERC20 {
-
+    uint256 _initialSupply = 4 * 10 ** 8;
+    string _tokenSymbol = "WEKU"; 
+    string _tokenName = "WEKU Token";       
+    
     //uint256 public sellPrice;
     //uint256 public buyPrice;
 
@@ -190,14 +193,11 @@ contract WEKUToken is owned, TokenERC20 {
 
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function WEKUToken(
-        uint256 initialSupply,
-        string tokenName,
-        string tokenSymbol,
-        address wekufounder
-    ) TokenERC20(initialSupply, tokenName, tokenSymbol) public {
+        address _founder
+    ) TokenERC20(_initialSupply, _tokenName, _tokenSymbol) public {
         deployedTime = now;
-        deployedAmount = initialSupply;
-        founder = wekufounder;
+        deployedAmount = _initialSupply;
+        founder = _founder; 
         // assign 20% to founder team once and only once.
         _assignToFounder(founder);
     }
