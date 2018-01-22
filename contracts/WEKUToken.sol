@@ -175,8 +175,8 @@ contract TokenERC20 {
 
 contract WEKUToken is owned, TokenERC20 {
 
-    uint256 public sellPrice;
-    uint256 public buyPrice;
+    //uint256 public sellPrice;
+    //uint256 public buyPrice;
 
     mapping (address => bool) public frozenAccount;
 
@@ -199,27 +199,22 @@ contract WEKUToken is owned, TokenERC20 {
         deployedAmount = initialSupply;
         founder = wekufounder;
         // assign 20% to founder team once and only once.
-        assignToFounder(founder);
+        _assignToFounder(founder);
     }
 
-    /* Internal transfer, only can be called by this contract */
-    function _transfer(address _from, address _to, uint _value) internal {
-        require (_to != 0x0);                               // Prevent transfer to 0x0 address. Use burn() instead
-        require (balanceOf[_from] >= _value);               // Check if the sender has enough
-        require (balanceOf[_to] + _value > balanceOf[_to]); // Check for overflows
-        require(!frozenAccount[_from]);                     // Check if sender is frozen
-        require(!frozenAccount[_to]);                       // Check if recipient is frozen
-
-        if(_from == founder && !limitFounderWithdraw(_value)) return;    // make sure founders can only withdraw 25% each year after first year       
-
-        balanceOf[_from] -= _value;                         // Subtract from the sender
-        balanceOf[_to] += _value;                           // Add the same to the recipient
-
-        if(_from == founder) founderWithdrawed += _value;    // record how many founder withdrawed
-
-        Transfer(_from, _to, _value);
+    /**
+     * Transfer tokens
+     *
+     * Send `_value` tokens to `_to` from your account
+     *
+     * @param _to The address of the recipient
+     * @param _value the amount to send
+     */
+    function transfer(address _to, uint256 _value) public {
+        _transfer(msg.sender, _to, _value);
     }
 
+    
     /// @notice Create `mintedAmount` tokens and send it to `target`
     /// @param target Address to receive the tokens
     /// @param mintedAmount the amount of tokens it will receive
@@ -238,6 +233,7 @@ contract WEKUToken is owned, TokenERC20 {
         FrozenFunds(target, freeze);
     }
 
+    /*
     /// @notice Allow users to buy tokens for `newBuyPrice` eth and sell tokens for `newSellPrice` eth
     /// @param newSellPrice Price the users can sell to the contract
     /// @param newBuyPrice Price users can buy from the contract
@@ -259,14 +255,35 @@ contract WEKUToken is owned, TokenERC20 {
         _transfer(msg.sender, this, amount);              // makes the transfers
         msg.sender.transfer(amount * sellPrice);          // sends ether to the seller. It's important to do this last to avoid recursion attacks
     }
+    */
 
-    function assignToFounder(address _founder) internal {
+    // internal functions
+
+    /* Internal transfer, only can be called by this contract */
+    function _transfer(address _from, address _to, uint _value) internal { 
+        require (_to != 0x0);                               // Prevent transfer to 0x0 address. Use burn() instead
+        require (balanceOf[_from] >= _value);               // Check if the sender has enough
+        require (balanceOf[_to] + _value > balanceOf[_to]); // Check for overflows
+        require(!frozenAccount[_from]);                     // Check if sender is frozen
+        require(!frozenAccount[_to]);                       // Check if recipient is frozen
+
+        if(_from == founder && !_limitFounderWithdraw(_value)) revert();    // make sure founders can only withdraw 25% each year after first year       
+             
+        balanceOf[_from] -= _value;                         // Subtract from the sender
+        balanceOf[_to] += _value;                           // Add the same to the recipient
+
+        if(_from == founder) founderWithdrawed += _value;    // record how many founder withdrawed
+
+        Transfer(_from, _to, _value);
+    }
+
+    function _assignToFounder(address _founder) internal {
         require(_founder != address(0x0));
         uint256 amountForFounder = totalSupply / 5; // 20%
         _transfer(owner, _founder, amountForFounder);
     }
 
-    function limitFounderWithdraw (uint256 _amount) internal constant returns (bool){
+    function _limitFounderWithdraw (uint256 _amount) internal constant returns (bool){
         bool flag  = false;
         uint256 _25percent =  deployedAmount / (5*4);  // 25% of founder's total
 

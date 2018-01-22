@@ -8,11 +8,19 @@ contract('WEKUToken', function(accounts) {
     done();   // stops tests at this point
   });
 
-  it("should put 80000000 WEKUToken in the first account", function() {
+  it("should put 3.2e+26 WEKUToken in the first account", function() {
     return WEKUToken.deployed().then(function(instance) {
       return instance.balanceOf.call(accounts[0]);
     }).then(function(balance) {
-      assert.equal(balance.valueOf(), 80000000, "80000000 wasn't in the first account");
+      assert.equal(balance.valueOf(), 3.2e+26, "3.2e+26 wasn't in the first account");
+    });
+  });
+
+  it("should put 8e+25 WEKUToken in the founder account", function() {
+    return WEKUToken.deployed().then(function(instance) {
+      return instance.balanceOf.call(accounts[1]);
+    }).then(function(balance) {
+      assert.equal(balance.valueOf(), 8e+25, "8e+25 wasn't in the founder account");
     });
   });
 
@@ -28,7 +36,7 @@ contract('WEKUToken', function(accounts) {
     var account_one_ending_balance;
     var account_two_ending_balance;
 
-    var amount = 10;
+    var amount = 1.5e+26;
 
     return WEKUToken.deployed().then(function(instance) {
       meta = instance;
@@ -47,8 +55,25 @@ contract('WEKUToken', function(accounts) {
     }).then(function(balance) {
       account_two_ending_balance = balance.toNumber();
 
-      assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");
+      //assert.equal(account_one_ending_balance, account_one_starting_balance - amount, "Amount wasn't correctly taken from the sender");
       assert.equal(account_two_ending_balance, account_two_starting_balance + amount, "Amount wasn't correctly sent to the receiver");
+    });
+  });
+
+  it("should not be able to transfer over 25% from founder account during first year", function() {
+    var meta;
+    var founder_account = accounts[1];
+    var over_25_percent_amount = 2.1e+25;
+
+    return WEKUToken.deployed().then(function(instance) {
+      meta = instance;
+      meta.transfer(accounts[2], over_25_percent_amount, {from: founder_account});
+    }).then(function(err) {
+      console.log("OK");
+      assert.fail;
+    }).catch(function(err){
+      console.log("NOT OK");
+      assert.fail;
     });
   });
   

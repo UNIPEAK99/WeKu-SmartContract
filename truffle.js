@@ -18,6 +18,11 @@ module.exports = {
       from: "0x461d98d4dc9109a919c56c8f48d4522de9a73a61", // default address to use for any transaction Truffle makes during migrations
       network_id: 4,
       gas: 4612388 // Gas limit used for deploys
+    },
+    "live": {
+      network_id: 1,
+      host: "127.0.0.1",
+      port: 8546   // Different than the default below
     }
   }
 };

@@ -1,0 +1,10 @@
+/*var Crowdsale = artifacts.require("./Crowdsale.sol");
+
+module.exports = function(deployer) {	
+	var ifSuccessfulSendTo = 0x914e22e872928aae6b0a68d87fe936dca3242a0e;
+    var fundingGoalInEthers = 30000;
+    var durationInMinutes = 43200;
+    var etherCostOfEachToken = 8000;
+    var addressOfTokenUsedAsReward = 0x914e22e872928aae6b0a68d87fe936dca3242a0e;
+  	deployer.deploy(Crowdsale, ifSuccessfulSendTo, fundingGoalInEthers, durationInMinutes, etherCostOfEachToken, addressOfTokenUsedAsReward); 
+};*/

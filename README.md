@@ -41,14 +41,16 @@ token owner   address = public_address[0] = 0x6f003229ec072c5d017bd28e834f59ad91
 token founder address = public_address[1] = 0xf2a34ed99647399076b29f8bfe78f1d541adc0f3
 
 
--- do not use: Truffle migrate -f 4 —network test --reset
+-- do not use: Truffle migrate -f 4 —-network test --reset
+-- truffle console --network development
+
 WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").totalSupply.call();
 WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").burn("1000000000000000000");
 
 WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").transfer("0x070e5e91719ee11557d878020cc5926b2090f78e", 33330000000000000000, {from: "0xf2a34ed99647399076b29f8bfe78f1d541adc0f3"});
 
 WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").balanceOf.call("0xf2a34ed99647399076b29f8bfe78f1d541adc0f3");
-WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").transfer("0x070e5e91719ee11557d878020cc5926b2090f78e", '2.0e+26', {from: "0xf2a34ed99647399076b29f8bfe78f1d541adc0f3"});
+WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").transfer("0x070e5e91719ee11557d878020cc5926b2090f78e", '2.0e+24', {from: "0xf2a34ed99647399076b29f8bfe78f1d541adc0f3"});
 
 
 WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").mintToken("0x070e5e91719ee11557d878020cc5926b2090f78e", 66600000000000000000);
