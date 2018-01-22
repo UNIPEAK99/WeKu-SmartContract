@@ -52,8 +52,10 @@ contract Crowdsale {
         amountRaised += amount;
 
         // first 1 -15 days, the price is 10% off.
-        if(now <= deployedTime + 15 days)
-            tokenReward.transfer(msg.sender, amount / (price * 100 / 110));
+        if(now <= deployedTime + 10 days)
+            tokenReward.transfer(msg.sender, amount / (price * 100 / 120));
+        else if(now <= deployedTime + 20 days)
+            tokenReward.transfer(msg.sender, amount / (price * 100 / 110));        
         else
             tokenReward.transfer(msg.sender, amount / price);
 
