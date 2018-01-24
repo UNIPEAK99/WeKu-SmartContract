@@ -26,18 +26,21 @@ contract Crowdsale {
      * Setup the owner
      */
     function Crowdsale(
-        address ifSuccessfulSendTo,
-        uint fundingGoalInEthers,
-        uint durationInMinutes,
-        uint etherCostOfEachToken,
+        address ifSuccessfulSendTo,        
         address addressOfTokenUsedAsReward
     ) public {
-        beneficiary = ifSuccessfulSendTo;
+
+        uint fundingGoalInEthers = 30000;
+        uint durationInMinutes = 60 * 24 * 30; // 30 days sale
+        uint etherCostOfEachToken = 8000;
+
         fundingGoal = fundingGoalInEthers * 1 ether;
         deadline = now + durationInMinutes * 1 minutes;
         price = etherCostOfEachToken * 1 ether;
         deployedTime = now;
-        tokenReward = token(addressOfTokenUsedAsReward);
+
+        beneficiary = ifSuccessfulSendTo;
+        tokenReward = token(addressOfTokenUsedAsReward);   
     }
 
     /**
@@ -51,15 +54,22 @@ contract Crowdsale {
         balanceOf[msg.sender] += amount;
         amountRaised += amount;
 
-        // first 1 -15 days, the price is 10% off.
+        uint tempPrice = price;
+
+        // from 1st -10th, the price is 20% off.
         if(now <= deployedTime + 10 days)
-            tokenReward.transfer(msg.sender, amount / (price * 100 / 120));
+            tempPrice = getPriceByDiscount(price, 20);
+        // 10th - 20th, the price is 10% off.
         else if(now <= deployedTime + 20 days)
-            tokenReward.transfer(msg.sender, amount / (price * 100 / 110));        
-        else
-            tokenReward.transfer(msg.sender, amount / price);
+            tempPrice = getPriceByDiscount(price, 10); 
+
+        tokenReward.transfer(msg.sender, amount / tempPrice);
 
         FundTransfer(msg.sender, amount, true);
+    }
+
+    function getPriceByDiscount(uint _price, uint _percentOff) public pure returns (uint) {
+        return _price * (100 - _percentOff) / 100;
     }
 
     modifier afterDeadline() { if (now >= deadline) _; }
