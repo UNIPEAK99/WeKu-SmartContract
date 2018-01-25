@@ -62,7 +62,7 @@ contract('WEKUToken', function(accounts) {
     var account_one_ending_balance;
     var account_two_ending_balance;
 
-    var amount = 1.5e+26;
+    var amount = 1e+25;
 
     account_one_starting_balance =  await meta.balanceOf.call(account_one);    
     account_two_starting_balance = await meta.balanceOf.call(account_two);
