@@ -34,13 +34,11 @@ contract Crowdsale {
         address addressOfTokenUsedAsReward
     ) public {
 
-        uint fundingGoalInEthers = 30000;
-        uint durationInMinutes = 60 * 24 * 30; // 30 days sale
-        uint etherCostOfEachToken = 1 / 8000;
+        fundingGoal = 30000 * 1 ether;  // 3000 ether.        
+        price = 1 ether / 8000;  // price in wei, 1 ether for 8000 tokens.
 
-        fundingGoal = fundingGoalInEthers * 1 ether;
-        deadline = now + durationInMinutes * 1 minutes;
-        price = etherCostOfEachToken * 1 ether;
+        uint durationInMinutes = 60 * 24 * 30; // 30 days sale
+        deadline = now + durationInMinutes * 1 minutes;        
         deployedTime = now;
 
         beneficiary = ifSuccessfulSendTo;

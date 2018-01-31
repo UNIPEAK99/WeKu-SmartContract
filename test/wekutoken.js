@@ -28,8 +28,8 @@ contract('WEKUToken', function(accounts) {
       //console.log(ownerBalance);
       //console.log(founderBalance);
 
-      assert.equal(symbol, "WEKU", "token symbol isn't correct");
-      assert.equal(name, "WEKU Token", "token name isnt correct");
+      assert.equal(symbol, "KUU", "token symbol isn't correct");
+      assert.equal(name, "KUU Token", "token name isnt correct");
       assert.equal(ownerBalance.valueOf(), 3.2e+26, "owner account amount is not correct");  
       assert.equal(founderBalance.valueOf(), 8.0e+25, "founder account amount is not correct");   
   });
