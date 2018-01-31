@@ -5,7 +5,7 @@ import "./TokenERC20.sol";
 
 contract WEKUToken is Owned, TokenERC20 {
     uint256 _initialSupply = 4 * 10 ** 8;
-    string _tokenSymbol = "KUU"; 
+    string _tokenSymbol = "KUU2"; 
     string _tokenName = "KUU Token";       
     
     //uint256 public sellPrice;

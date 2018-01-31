@@ -64,5 +64,23 @@ WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").setPrices(4000, 3000)
 
 
 
+Rinkeby network accounts password: Weku@2018
+Main account (deployer/owner): 0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e
+Foundation account: 0x308dC8b184cf7225280feaf642C87cf1Cbd2fCe6
+Team account: 0x14a57942185A3F739340dA0ba8Ae268a65697773
+Test 1: 0x7E74B77B6d6171dC8BeD3DEbbBD33E1e5B5FeC70
+
+KUU: 0xae4239dcc161f092d09713145d52cc2035bb1d98
+Crowdsale: 0x0a67079ba52d98c23dcda12470828b91a105e73d
+
+KUU2: 0x8e5f353bff2afe35a7d75d94b2debd1c63f1a146
+Crowdsale2: 0x5ab8d6ecf15c0f73ad79bf6427d934a156f6e25a
+
+
+geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --unlock="0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e"
+
+
+
+
 
 

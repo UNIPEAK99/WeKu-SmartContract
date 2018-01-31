@@ -1,18 +1,6 @@
 var WEKUToken = artifacts.require("./WEKUToken.sol");
 
-module.exports = function(deployer){
-	
-	var founderAddress = 0x6f003229ec072c5d017bd28e834f59ad914aacb0;
-  	deployer.deploy(WEKUToken, founderAddress); 
+module.exports = function(deployer){	
+	var team_account = "0x14a57942185A3F739340dA0ba8Ae268a65697773";
+  	deployer.deploy(WEKUToken, team_account); 
 };
-
-/*
-var ConvertLib = artifacts.require("./ConvertLib.sol");
-var MetaCoin = artifacts.require("./MetaCoin.sol");
-
-module.exports = function(deployer) {
-  deployer.deploy(ConvertLib);
-  deployer.link(ConvertLib, MetaCoin);
-  deployer.deploy(MetaCoin);
-};
-*/
