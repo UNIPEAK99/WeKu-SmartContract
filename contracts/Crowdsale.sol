@@ -1,11 +1,15 @@
 
 pragma solidity ^0.4.16;
 
+import "./SafeMath.sol";
+
 interface token {
     function transfer(address receiver, uint amount) public;
 }
 
 contract Crowdsale {
+    using SafeMath for uint;
+
     address public beneficiary;
     uint public fundingGoal;
     uint public amountRaised;
@@ -32,7 +36,7 @@ contract Crowdsale {
 
         uint fundingGoalInEthers = 30000;
         uint durationInMinutes = 60 * 24 * 30; // 30 days sale
-        uint etherCostOfEachToken = 8000;
+        uint etherCostOfEachToken = 1 / 8000;
 
         fundingGoal = fundingGoalInEthers * 1 ether;
         deadline = now + durationInMinutes * 1 minutes;
@@ -50,9 +54,10 @@ contract Crowdsale {
      */
     function () public payable {
         require(!crowdsaleClosed);
+
         uint amount = msg.value;
-        balanceOf[msg.sender] += amount;
-        amountRaised += amount;
+        balanceOf[msg.sender] = balanceOf[msg.sender].add(amount);
+        amountRaised = amountRaised.add(amount);
 
         uint tempPrice = price;
 
