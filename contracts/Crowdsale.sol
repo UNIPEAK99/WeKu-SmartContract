@@ -10,39 +10,33 @@ interface token {
 contract Crowdsale {
     using SafeMath for uint;
 
-    address public beneficiary;
-    uint public fundingGoal;
+    uint public constant FUNDING_GOAL = 30000 * 1 ether;     
+    uint public constant DURATION_IN_DAYS = 30; 
+        
+    uint public constant FIRST_RATE = 8500;   // ICO Day 1 -10: 1ETH can purchase 8500 WeKu tokens.
+    uint public constant SECOND_RATE = 8000;  // ICO Day 11-25: 1ETH can purchase 8000 WeKu tokens.
+    uint public constant THIRD_RATE = 7000;   // ICO Day 26-30: 1ETH can purchase 7000 WeKu tokens.
+
+    address public beneficiary;    
     uint public amountRaised;
     uint public deadline;
-    uint public price;
     token public tokenReward;
-    mapping(address => uint256) public balanceOf;
-    bool fundingGoalReached = false;
-    bool crowdsaleClosed = false;
     uint deployedTime;
 
     event GoalReached(address recipient, uint totalAmountRaised);
     event FundTransfer(address backer, uint amount, bool isContribution);
-
-    /**
-     * Constrctor function
-     *
-     * Setup the owner
-     */
+    
     function Crowdsale(
         address ifSuccessfulSendTo,        
         address addressOfTokenUsedAsReward
     ) public {
-
-        fundingGoal = 30000 * 1 ether;  // 3000 ether.        
-        price = 1 ether / 8000;  // price in wei, 1 ether for 8000 tokens.
-
-        uint durationInMinutes = 60 * 24 * 30; // 30 days sale
-        deadline = now + durationInMinutes * 1 minutes;        
         deployedTime = now;
+        deadline = now + DURATION_IN_DAYS * 1 days;   
 
         beneficiary = ifSuccessfulSendTo;
         tokenReward = token(addressOfTokenUsedAsReward);   
+       
+        amountRaised = 0;
     }
 
     /**
@@ -51,73 +45,30 @@ contract Crowdsale {
      * The function without name is the default function that is called whenever anyone sends funds to a contract
      */
     function () public payable {
-        require(!crowdsaleClosed);
+        require(now <= deadline);
+        require(amountRaised <= FUNDING_GOAL);
 
         uint amount = msg.value;
-        balanceOf[msg.sender] = balanceOf[msg.sender].add(amount);
         amountRaised = amountRaised.add(amount);
 
-        uint tempPrice = price;
-
-        // from 1st -10th, the price is 20% off.
+        uint rate = THIRD_RATE;        
         if(now <= deployedTime + 10 days)
-            tempPrice = getPriceByDiscount(price, 20);
-        // 10th - 20th, the price is 10% off.
-        else if(now <= deployedTime + 20 days)
-            tempPrice = getPriceByDiscount(price, 10); 
+            rate = FIRST_RATE;        
+        else if(now <= deployedTime + 25 days)
+            rate = SECOND_RATE;
 
-        tokenReward.transfer(msg.sender, amount / tempPrice);
+        uint tokenAmount = amount.mul(rate) / 1 ether;
+
+        tokenReward.transfer(msg.sender, tokenAmount);
 
         FundTransfer(msg.sender, amount, true);
     }
 
-    function getPriceByDiscount(uint _price, uint _percentOff) public pure returns (uint) {
-        return _price * (100 - _percentOff) / 100;
-    }
-
     modifier afterDeadline() { if (now >= deadline) _; }
 
-    /**
-     * Check if goal was reached
-     *
-     * Checks if the goal or time limit has been reached and ends the campaign
-     */
-    function checkGoalReached() public afterDeadline {
-        if (amountRaised >= fundingGoal){
-            fundingGoalReached = true;
-            GoalReached(beneficiary, amountRaised);
-        }
-        crowdsaleClosed = true;
-    }
-
-
-    /**
-     * Withdraw the funds
-     *
-     * Checks to see if goal or time limit has been reached, and if so, and the funding goal was reached,
-     * sends the entire amount to the beneficiary. If goal was not reached, each contributor can withdraw
-     * the amount they contributed.
-     */
-    function safeWithdrawal() public afterDeadline {
-        if (!fundingGoalReached) {
-            uint amount = balanceOf[msg.sender];
-            balanceOf[msg.sender] = 0;
-            if (amount > 0) {
-                if (msg.sender.send(amount)) {
-                    FundTransfer(msg.sender, amount, false);
-                } else {
-                    balanceOf[msg.sender] = amount;
-                }
-            }
-        }
-
-        if (fundingGoalReached && beneficiary == msg.sender) {
-            if (beneficiary.send(amountRaised)) {
-                FundTransfer(beneficiary, amountRaised, false);
-            } else {
-                //If we fail to send the funds to beneficiary, unlock funders balance
-                fundingGoalReached = false;
-            }
-        }
+    function safeWithdrawal() public afterDeadline {     
+        require(beneficiary == msg.sender);   
+        beneficiary.transfer(amountRaised);
+        FundTransfer(beneficiary, amountRaised, false);        
     }
 }
