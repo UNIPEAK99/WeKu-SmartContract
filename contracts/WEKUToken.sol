@@ -6,7 +6,7 @@ import "./TokenERC20.sol";
 contract WEKUToken is Owned, TokenERC20 {
     uint256 _initialSupply = 4 * 10 ** 8;
     string _tokenSymbol = "KUU3"; 
-    string _tokenName = "KUU Token";     
+    string _tokenName = "KUU3 Token";     
 
     uint256 deployedTime;   // the time this constract is deployed.
     uint256 deployedAmount; // total amount of token when this contract is deployed
@@ -102,16 +102,14 @@ contract WEKUToken is Owned, TokenERC20 {
     // after deployed:  40%
     // after one year:  30% 
     // after two years: 30%
-    function _limitTeamWithdraw (uint256 _amount) internal constant returns (bool){
-        bool flag  = false;
+    function _limitTeamWithdraw (uint256 _amount) internal view returns (bool){
+        bool flag  = true;
         uint256 _10percent =  deployedAmount / 10;  // 10% of team's total        
 
         if(now <= deployedTime + 1 years && _amount + teamWithdrawed >= _10percent * 4) 
             flag = false;
         else if(now <= deployedTime + 2 years && _amount + teamWithdrawed >= _10percent * 7) 
-            flag = false;        
-        else
-            flag = true;
+            flag = false; 
 
         return flag;
     }

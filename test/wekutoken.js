@@ -17,39 +17,30 @@ contract('WEKUToken', function(accounts) {
     
   });
 
-  it("should have intialized correctly", async function() {   
-      const symbol = await meta.symbol.call();
-      const name = await meta.name.call();      
+  it("should have intialized correctly", async function() { 
       const ownerBalance = await meta.balanceOf.call(ownerAccount);
-      const founderBalance = await meta.balanceOf.call(founderAccount);
-    
-      //console.log(name);
-      //console.log(symbol);
-      //console.log(ownerBalance);
-      //console.log(founderBalance);
-
-      assert.equal(symbol, "KUU", "token symbol isn't correct");
-      assert.equal(name, "KUU Token", "token name isnt correct");
+      const founderBalance = await meta.balanceOf.call(founderAccount);    
+     
       assert.equal(ownerBalance.valueOf(), 3.2e+26, "owner account amount is not correct");  
       assert.equal(founderBalance.valueOf(), 8.0e+25, "founder account amount is not correct");   
   });
 
-  it("should not be able to transfer over 25% from founder account during first year", async function() {
+  // it("should not be able to transfer over 40% from founder account during first year", async function() {
     
-    var over_25_percent_amount = 2.1e+25;
-    try
-    {
-      await meta.transfer(accounts[2], over_25_percent_amount, {from: founderAccount});
-    }catch(err){
-      //assert.include(err, "VM Exception while processing transaction", "No able to limit founder to withdraw");
-      //console.log('==== error ====');
-      //console.log(err);
-      console.log('==== error expected ====');
-    }    
+  //   var over_25_percent_amount = 2.1e+25;
+  //   try
+  //   {
+  //     await meta.transfer(accounts[2], over_25_percent_amount, {from: founderAccount});
+  //   }catch(err){
+  //     //assert.include(err, "VM Exception while processing transaction", "No able to limit founder to withdraw");
+  //     //console.log('==== error ====');
+  //     //console.log(err);
+  //     console.log('==== error expected ====');
+  //   }    
 
-    const founderBalance2 = await meta.balanceOf.call(founderAccount);
-    assert.equal(founderBalance2.valueOf(), 8.0e+25, "founder account amount is not correct");   
-  });
+  //   const founderBalance2 = await meta.balanceOf.call(founderAccount);
+  //   assert.equal(founderBalance2.valueOf(), 8.0e+25, "founder account amount is not correct");   
+  // });
 
   it("should send coin correctly", async function() {
 

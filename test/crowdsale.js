@@ -14,17 +14,17 @@ contract('Crowdsale', function(accounts) {
     
   });
 
-  it("should have discount calculated correctly", async function() {   
+  it("should have get tokens calculated correctly", async function() {   
      
-      const price20off = await meta.getPriceByDiscount.call(8000, 20);
-      const price10off = await meta.getPriceByDiscount.call(8000, 10);
+      const ether_1 = await meta.getWEKUTokens.call(1);
+      const ether_100 = await meta.getWEKUTokens.call(100);
       
-      console.log('percent off ...');
-      console.log(price20off);
-      console.log(price10off);
+      console.log('get tokens ...');
+      console.log(ether_1);
+      console.log(ether_100);
 
-      assert.equal(price20off, 6400, "10 percent off is not correct");  
-      assert.equal(price10off, 7200, "20 percent off is not correct");   
+      assert.equal(ether_1.valueOf(), 8500, "get tokens of 1 ether is not correct");  
+      assert.equal(ether_100.valueOf(), 850000, "get tokens of 100 ether is not correct");   
   });
 
   
