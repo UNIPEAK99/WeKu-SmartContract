@@ -5,8 +5,8 @@ import "./TokenERC20.sol";
 
 contract WEKUToken is Owned, TokenERC20 {
     uint _initialSupply = 4 * 10 ** 8;
-    string _tokenSymbol = "KUU3"; 
-    string _tokenName = "KUU3 Token";     
+    string _tokenSymbol = "KUU4"; 
+    string _tokenName = "KUU4 Token";     
 
     uint256 deployedTime;   // the time this constract is deployed.
     address team;           // team account
@@ -24,7 +24,7 @@ contract WEKUToken is Owned, TokenERC20 {
     ) TokenERC20(_initialSupply, _tokenName, _tokenSymbol) public {
         deployedTime = now;
         team = _team; 
-        teamTotal = _initialSupply / 5; 
+        teamTotal = (_initialSupply * 10 ** 18) / 5; 
         // assign 20% to team team once and only once.         
         _transfer(owner, team, teamTotal);
     }

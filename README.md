@@ -80,6 +80,12 @@ Crowdsale2: 0x5ab8d6ecf15c0f73ad79bf6427d934a156f6e25a
 KUU3: 0x06b56ff741ad40a4cd67fc84ef689e88dee0b0fc
 Crowdsale3: 0x081c5b6eadb6259223bab4b19a740ea3c22d822d
 
+KUU4: 0x662cc06988c51879602c44288f6add0086377b74
+CrowdSale4: 0xca00adaa5a9af54820de7b82642c939f2c2cc7d7
+
+KUU5:
+Crowdsale5: 
+
 ============
 geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --unlock="0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e"
 truffle migrate -f 2 --network rinkeby
