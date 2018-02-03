@@ -4,13 +4,13 @@ import "./Owned.sol";
 import "./TokenERC20.sol";
 
 contract WEKUToken is Owned, TokenERC20 {
-    uint256 _initialSupply = 4 * 10 ** 8;
+    uint _initialSupply = 4 * 10 ** 8;
     string _tokenSymbol = "KUU3"; 
     string _tokenName = "KUU3 Token";     
 
     uint256 deployedTime;   // the time this constract is deployed.
-    uint256 deployedAmount; // total amount of token when this contract is deployed
     address team;           // team account
+    uint256 teamTotal;      // total amount of token assigned to team.    
     uint256 teamWithdrawed; // total withdrawed of team account
 
     mapping (address => bool) public frozenAccount;
@@ -23,10 +23,10 @@ contract WEKUToken is Owned, TokenERC20 {
         address _team
     ) TokenERC20(_initialSupply, _tokenName, _tokenSymbol) public {
         deployedTime = now;
-        deployedAmount = _initialSupply;
         team = _team; 
-        // assign 20% to team team once and only once.
-        _assignToTeam(team);
+        teamTotal = _initialSupply / 5; 
+        // assign 20% to team team once and only once.         
+        _transfer(owner, team, teamTotal);
     }
 
     /**
@@ -80,7 +80,12 @@ contract WEKUToken is Owned, TokenERC20 {
         require(!frozenAccount[_from]);                     // Check if sender is frozen
         require(!frozenAccount[_to]);                       // Check if recipient is frozen
 
-        if(_from == team && !_limitTeamWithdraw(_value)) revert();        // make sure founders can only withdraw 25% each year after first year       
+        // make sure founders can only withdraw 25% each year after first year    
+        if(_from == team){
+            bool flag = _limitTeamWithdraw(_value, teamTotal, teamWithdrawed, deployedTime, now);
+            if(!flag)
+                revert();
+        }          
              
         balanceOf[_from] = balanceOf[_from].sub(_value);                  // Subtract from the sender
         balanceOf[_to] = balanceOf[_to].add(_value);                      // Add the same to the recipient
@@ -90,28 +95,28 @@ contract WEKUToken is Owned, TokenERC20 {
         Transfer(_from, _to, _value);
     }
 
-    function _assignToTeam(address _founder) internal {
-        require(_founder != address(0x0));
-
-        uint256 amountForFounder = totalSupply / 5;  // assign 20% to team
-        
-        _transfer(owner, _founder, amountForFounder);
-    }
-
+    // setperate this function is for unit testing.
     // limited withdraw: 
     // after deployed:  40%
     // after one year:  30% 
     // after two years: 30%
-    function _limitTeamWithdraw (uint256 _amount) internal view returns (bool){
+    function _limitTeamWithdraw(uint _amount, uint _teamTotal, uint _teamWithrawed, uint _deployedTime, uint _currentTime) internal pure returns(bool){
+        
         bool flag  = true;
-        uint256 _10percent =  deployedAmount / 10;  // 10% of team's total        
 
-        if(now <= deployedTime + 1 years && _amount + teamWithdrawed >= _10percent * 4) 
+        uint _tenPercent = _teamTotal / 10;    
+        if(_currentTime <= _deployedTime + 1 years && _amount + _teamWithrawed >= _tenPercent * 4) 
             flag = false;
-        else if(now <= deployedTime + 2 years && _amount + teamWithdrawed >= _10percent * 7) 
+        else if(_currentTime <= _deployedTime + 2 years && _amount + _teamWithrawed >= _tenPercent * 7) 
             flag = false; 
 
         return flag;
+
     }
+
+    // this function is just for unit test, will be comment out when deploy to production.
+    // function limitWithdrawTestWrapper(uint _amount, uint _teamTotal, uint _teamWithrawed, uint _deployedTime, uint _currentTime) public pure returns(bool){        
+    //     return _limitTeamWithdraw(_amount, _teamTotal, _teamWithrawed, _deployedTime, _currentTime);
+    // }
 
 }

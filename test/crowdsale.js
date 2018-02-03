@@ -7,7 +7,7 @@ contract('Crowdsale', function(accounts) {
   before(async function() {    
 
     try{
-      meta = await Crowdsale.new([0x914e22e872928aae6b0a68d87fe936dca3242a0e, 0x914e22e872928aae6b0a68d87fe936dca3242a0e]); 
+      meta = await Crowdsale.new([0x123, 0x234]); 
     }catch(err){
       console.log(err);
     }

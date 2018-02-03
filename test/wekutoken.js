@@ -24,23 +24,7 @@ contract('WEKUToken', function(accounts) {
       assert.equal(ownerBalance.valueOf(), 3.2e+26, "owner account amount is not correct");  
       assert.equal(founderBalance.valueOf(), 8.0e+25, "founder account amount is not correct");   
   });
-
-  // it("should not be able to transfer over 40% from founder account during first year", async function() {
-    
-  //   var over_25_percent_amount = 2.1e+25;
-  //   try
-  //   {
-  //     await meta.transfer(accounts[2], over_25_percent_amount, {from: founderAccount});
-  //   }catch(err){
-  //     //assert.include(err, "VM Exception while processing transaction", "No able to limit founder to withdraw");
-  //     //console.log('==== error ====');
-  //     //console.log(err);
-  //     console.log('==== error expected ====');
-  //   }    
-
-  //   const founderBalance2 = await meta.balanceOf.call(founderAccount);
-  //   assert.equal(founderBalance2.valueOf(), 8.0e+25, "founder account amount is not correct");   
-  // });
+  
 
   it("should send coin correctly", async function() {
 
@@ -99,6 +83,55 @@ contract('WEKUToken', function(accounts) {
     assert.equal(account_three_ending_balance.toNumber(), account_three_starting_balance.toNumber() + amount, "Amount wasn't correctly sent to the account three");
 
   });
+
+  /*
+  it("should fail if withdraw over 40% in first year.", async function() {
+    
+    var amount = 5e+25;
+    var teamTotal = 8e+25;
+    var teamWithdrawed = 0;
+    
+    var deployedTime = new Date();
+    deployedTime.setFullYear(2018, 1, 1);
+    var currentTime = new Date();
+    currentTime.setFullYear(2018, 2, 1);
+
+    var flag =  await meta.limitWithdrawTestWrapper.call(amount, teamTotal, teamWithdrawed, deployedTime.getTime(), currentTime.getTime()); 
+    assert.equal(flag, false, "Should not be able to withdraw over 40% in first year.");
+
+  });
+
+  it("should pass if withdraw within 40% in first year.", async function() {
+    
+    var amount = 1e+25;
+    var teamTotal = 8e+25;
+    var teamWithdrawed = 0;
+    
+    var deployedTime = new Date();
+    deployedTime.setFullYear(2018, 1, 1);
+    var currentTime = new Date();
+    currentTime.setFullYear(2018, 2, 1);
+
+    var flag =  await meta.limitWithdrawTestWrapper.call(amount, teamTotal, teamWithdrawed, deployedTime.getTime(), currentTime.getTime()); 
+    assert.equal(flag, true, "Should not be able to withdraw within 40% in first year.");
+
+  });
+
+  it("should fail if withdraw over 70% in second year.", async function() {
+    
+    var amount = 7e+25;
+    var teamTotal = 8e+25;
+    var teamWithdrawed = 0;
+    
+    var deployedTime = new Date();
+    deployedTime.setFullYear(2018, 1, 1);
+    var currentTime = new Date();
+    currentTime.setFullYear(2019, 2, 1);
+
+    var flag =  await meta.limitWithdrawTestWrapper.call(amount, teamTotal, teamWithdrawed, deployedTime.getTime(), currentTime.getTime()); 
+    assert.equal(flag, false, "Should not be able to withdraw over 70% in second year.");
+
+  });*/
 
   
 });
