@@ -11,13 +11,13 @@ contract Crowdsale {
     using SafeMath for uint;
 
     uint public constant FUNDING_GOAL = 30 * 1 ether;     
-    uint public constant DURATION_IN_DAYS = 5; 
+    uint public constant DURATION_IN_DAYS = 3; 
         
     uint public constant FIRST_RATE = 8500;   // ICO Day 1 -10: 1ETH can purchase 8500 WeKu tokens.
     uint public constant SECOND_RATE = 8000;  // ICO Day 11-25: 1ETH can purchase 8000 WeKu tokens.
     uint public constant THIRD_RATE = 7000;   // ICO Day 26-30: 1ETH can purchase 7000 WeKu tokens.
-    uint public constant FIRST_RATE_DAYS = 2;   
-    uint public constant SECOND_RATE_DAYS = 4;  
+    uint public constant FIRST_RATE_DAYS = 1;   
+    uint public constant SECOND_RATE_DAYS = 2;  
 
     address public beneficiary;    
     uint public amountRaised;

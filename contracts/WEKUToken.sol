@@ -4,9 +4,10 @@ import "./Owned.sol";
 import "./TokenERC20.sol";
 
 contract WEKUToken is Owned, TokenERC20 {
-    uint _initialSupply = 4 * 10 ** 8;
-    string _tokenSymbol = "KUU4"; 
-    string _tokenName = "KUU4 Token";     
+    
+    string public constant TOKEN_SYMBOL  = "KUU5"; 
+    string public constant TOKEN_NAME    = "KUU5 Token";  
+    uint public constant INITIAL_SUPPLLY = 4 * 10 ** 8;   
 
     uint256 deployedTime;   // the time this constract is deployed.
     address team;           // team account
@@ -21,10 +22,10 @@ contract WEKUToken is Owned, TokenERC20 {
     /* Initializes contract with initial supply tokens to the creator of the contract */
     function WEKUToken(
         address _team
-    ) TokenERC20(_initialSupply, _tokenName, _tokenSymbol) public {
+    ) TokenERC20(INITIAL_SUPPLLY, TOKEN_NAME, TOKEN_SYMBOL) public {
         deployedTime = now;
         team = _team; 
-        teamTotal = (_initialSupply * 10 ** 18) / 5; 
+        teamTotal = (INITIAL_SUPPLLY * 10 ** 18) / 5; 
         // assign 20% to team team once and only once.         
         _transfer(owner, team, teamTotal);
     }
@@ -62,15 +63,15 @@ contract WEKUToken is Owned, TokenERC20 {
         FrozenFunds(target, freeze);
     }
 
-    // batch assign tokens to users registered in airdrops
+    /// @notice batch assign tokens to users registered in airdrops
+    /// @param earlyBirds address[] format in wallet: ["address1", "address2", ...]
+    /// @param amount without decimal amount: 10**18
     function assignToEarlyBirds(address[] earlyBirds, uint256 amount) onlyOwner public {
         require(amount > 0);
 
         for (uint i = 0; i < earlyBirds.length; i++)
-            _transfer(msg.sender, earlyBirds[i], amount);
+            _transfer(msg.sender, earlyBirds[i], amount * 10 ** 18);
     }
-
-    // internal functions
 
     /* Internal transfer, only can be called by this contract */
     function _transfer(address _from, address _to, uint _value) internal { 
@@ -105,18 +106,13 @@ contract WEKUToken is Owned, TokenERC20 {
         bool flag  = true;
 
         uint _tenPercent = _teamTotal / 10;    
-        if(_currentTime <= _deployedTime + 1 years && _amount + _teamWithrawed >= _tenPercent * 4) 
+        if(_currentTime <= _deployedTime + 1 days && _amount + _teamWithrawed >= _tenPercent * 4) 
             flag = false;
-        else if(_currentTime <= _deployedTime + 2 years && _amount + _teamWithrawed >= _tenPercent * 7) 
+        else if(_currentTime <= _deployedTime + 2 days && _amount + _teamWithrawed >= _tenPercent * 7) 
             flag = false; 
 
         return flag;
 
     }
-
-    // this function is just for unit test, will be comment out when deploy to production.
-    // function limitWithdrawTestWrapper(uint _amount, uint _teamTotal, uint _teamWithrawed, uint _deployedTime, uint _currentTime) public pure returns(bool){        
-    //     return _limitTeamWithdraw(_amount, _teamTotal, _teamWithrawed, _deployedTime, _currentTime);
-    // }
 
 }
