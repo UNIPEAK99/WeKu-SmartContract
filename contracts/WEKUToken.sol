@@ -5,9 +5,9 @@ import "./TokenERC20.sol";
 
 contract WEKUToken is Owned, TokenERC20 {
     
-    string public constant TOKEN_SYMBOL  = "KUU5"; 
-    string public constant TOKEN_NAME    = "KUU5 Token";  
-    uint public constant INITIAL_SUPPLLY = 4 * 10 ** 8;   
+    string public constant TOKEN_SYMBOL  = "KUU6"; 
+    string public constant TOKEN_NAME    = "KUU6 Token";  
+    uint public constant INITIAL_SUPPLLY = 4 * 10 ** 8; 
 
     uint256 deployedTime;   // the time this constract is deployed.
     address team;           // team account
