@@ -1,3 +1,31 @@
+
+Rinkeby network accounts password: Weku@2018
+
+Main account (deployer/owner): 0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e
+
+Foundation account: 0x308dC8b184cf7225280feaf642C87cf1Cbd2fCe6
+
+Team account: 0x14a57942185A3F739340dA0ba8Ae268a65697773
+
+Test 1: 0x7E74B77B6d6171dC8BeD3DEbbBD33E1e5B5FeC70
+
+Test 2: 0xd64577f3bEBF0DB0F644d782acd41B8D945F9d20
+
+
+KUU5:0xa8d3ecaaffb67e510d34c0ecaf86cc51db43d7c7
+
+Crowdsale5: 0x0b1e8d3772809ab7c106fcbfff783030d6aaa0c3
+
+KUU6: 0x07d9fee180c59dfa16dd7f937466a1e81444ba7e
+
+Crowdsale6: 0x60095ef2e928ab546ee7d26c25c5eda6ba2f55e1
+
+KUU7: 0xfb1bd8b0039587ee057f318d30c90ee44a1f5e6e
+
+Crowdsale7: 0x0795d7b1893d47259d207478e93192550409f391
+
+
+================
 SERVER:
 http://demo.weku.io:8545
 
@@ -32,11 +60,6 @@ Base HD Path:  m/44'/60'/0'/0/{account_index}
 
 Smart Contract Address==================
 
-WEKU TOKEN
-0x914e22e872928aae6b0a68d87fe936dca3242a0e
-Crowdsale  
-0x5b577ff6892eca401df6bc570b587c577fcd3b65
-
 token owner   address = public_address[0] = 0x6f003229ec072c5d017bd28e834f59ad914aacb0
 token founder address = public_address[1] = 0xf2a34ed99647399076b29f8bfe78f1d541adc0f3
 
@@ -64,30 +87,6 @@ WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").setPrices(4000, 3000)
 
 
 
-Rinkeby network accounts password: Weku@2018
-Main account (deployer/owner): 0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e
-Foundation account: 0x308dC8b184cf7225280feaf642C87cf1Cbd2fCe6
-Team account: 0x14a57942185A3F739340dA0ba8Ae268a65697773
-Test 1: 0x7E74B77B6d6171dC8BeD3DEbbBD33E1e5B5FeC70
-Test 2: 0xd64577f3bEBF0DB0F644d782acd41B8D945F9d20
-
-KUU: 0xae4239dcc161f092d09713145d52cc2035bb1d98
-Crowdsale: 0x0a67079ba52d98c23dcda12470828b91a105e73d
-
-KUU2: 0x8e5f353bff2afe35a7d75d94b2debd1c63f1a146
-Crowdsale2: 0x5ab8d6ecf15c0f73ad79bf6427d934a156f6e25a
-
-KUU3: 0x06b56ff741ad40a4cd67fc84ef689e88dee0b0fc
-Crowdsale3: 0x081c5b6eadb6259223bab4b19a740ea3c22d822d
-
-KUU4: 0x662cc06988c51879602c44288f6add0086377b74
-CrowdSale4: 0xca00adaa5a9af54820de7b82642c939f2c2cc7d7
-
-KUU5:0xa8d3ecaaffb67e510d34c0ecaf86cc51db43d7c7
-Crowdsale5: 0x0b1e8d3772809ab7c106fcbfff783030d6aaa0c3
-
-KUU6: 0x07d9fee180c59dfa16dd7f937466a1e81444ba7e
-Crowdsale6: 0x60095ef2e928ab546ee7d26c25c5eda6ba2f55e1
 
 ============
 geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --unlock="0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e"
