@@ -5,8 +5,8 @@ import "./TokenERC20.sol";
 
 contract WEKUToken is Owned, TokenERC20 {
     
-    string public constant TOKEN_SYMBOL  = "KUU7"; 
-    string public constant TOKEN_NAME    = "KUU7 Token";  
+    string public constant TOKEN_SYMBOL  = "KUU10"; 
+    string public constant TOKEN_NAME    = "KUU10 Token";  
     uint public constant INITIAL_SUPPLLY = 4 * 10 ** 8; 
 
     uint256 deployedTime;   // the time this constract is deployed.
@@ -108,7 +108,7 @@ contract WEKUToken is Owned, TokenERC20 {
         uint _tenPercent = _teamTotal / 10;    
         if(_currentTime <= _deployedTime + 1 days && _amount + _teamWithrawed >= _tenPercent * 4) 
             flag = false;
-        else if(_currentTime <= _deployedTime + 2 days && _amount + _teamWithrawed >= _tenPercent * 7) 
+        else if(_currentTime <= _deployedTime + 365 days && _amount + _teamWithrawed >= _tenPercent * 7) 
             flag = false; 
 
         return flag;
