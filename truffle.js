@@ -20,9 +20,11 @@ module.exports = {
       gas: 4612388 // Gas limit used for deploys
     },
     "live": {
+      from: "0x103a4547D8aB566C68c26Feea948b3BC125212f1", 
       network_id: 1,
       host: "127.0.0.1",
-      port: 8546   // Different than the default below
+      port: 8545,   // Different than the default below
+      gas: 4612388
     }
   }
 };

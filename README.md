@@ -1,4 +1,6 @@
 
+== Rinkeby ==
+
 Rinkeby network accounts password: Weku@2018
 
 Main account (deployer/owner): 0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e
@@ -86,11 +88,30 @@ WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").buyPrice.call();
 WEKUToken.at("0x914e22e872928aae6b0a68d87fe936dca3242a0e").setPrices(4000, 3000);
 
 
+== deploye together ==
+/*
+var WEKUToken = artifacts.require("./WEKUToken.sol");
+var Crowdsale = artifacts.require("./Crowdsale.sol");
 
+module.exports = function(deployer){	
+	var team_account       = "0x14a57942185A3F739340dA0ba8Ae268a65697773";
+	var foundation_account = "0x308dC8b184cf7225280feaf642C87cf1Cbd2fCe6"; 
 
-============
+  	deployer.deploy(WEKUToken, team_account).then(function() {
+	  return deployer.deploy(Crowdsale, foundation_account, WEKUToken.address);
+	});
+};
+*/
+
+== Rinkeby ==
 geth --rinkeby --rpc --rpcapi db,eth,net,web3,personal --unlock="0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e"
 truffle migrate -f 2 --network rinkeby
+
+== PROD ==
+geth must be over 1.8.2
+/Users/xiaofeiqian/Library/Application Support/Ethereum Wallet/binaries/Geth/unpacked/
+geth --rpc --rpcapi db,eth,net,web3,personal --syncmode="light" --unlock="0x103a4547D8aB566C68c26Feea948b3BC125212f1"
+truffle migrate -f 2 --network live
 
 
 
