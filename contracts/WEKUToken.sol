@@ -48,7 +48,7 @@ contract Owned {
     }
 }
 
-interface tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData) public; }
+interface tokenRecipient { function receiveApproval(address _from, uint256 _value, address _token, bytes _extraData) external; }
 
 contract TokenERC20 {
     using SafeMath for uint;
@@ -156,14 +156,14 @@ contract TokenERC20 {
         balanceOf[_to] = balanceOf[_to].add(_value);
 
 
-        Transfer(_from, _to, _value);
+        emit Transfer(_from, _to, _value);
     } 
 }
 
 contract WEKUToken is Owned, TokenERC20 {
     
     string public constant TOKEN_SYMBOL  = "KUU11"; 
-    string public constant TOKEN_NAME    = "KUU11 Token";  
+    string public constant TOKEN_NAME    = "WEKU Token";  
     uint public constant INITIAL_SUPPLLY = 4 * 10 ** 8; 
 
     uint256 deployedTime;   // the time this constract is deployed.
@@ -205,8 +205,8 @@ contract WEKUToken is Owned, TokenERC20 {
         balanceOf[target] = balanceOf[target].add(mintedAmount);
         totalSupply = totalSupply.add(mintedAmount);
 
-        Transfer(0, this, mintedAmount);
-        Transfer(this, target, mintedAmount);
+        emit Transfer(0, this, mintedAmount);
+        emit Transfer(this, target, mintedAmount);
     }
 
     /// @notice `freeze? Prevent | Allow` `target` from sending & receiving tokens
@@ -215,7 +215,7 @@ contract WEKUToken is Owned, TokenERC20 {
     function freezeAccount(address target, bool freeze) onlyOwner public {
         frozenAccount[target] = freeze;
 
-        FrozenFunds(target, freeze);
+        emit FrozenFunds(target, freeze);
     }
 
     /// @notice batch assign tokens to users registered in airdrops
@@ -248,7 +248,7 @@ contract WEKUToken is Owned, TokenERC20 {
 
         if(_from == team) teamWithdrawed = teamWithdrawed.add(_value);    // record how many team withdrawed
 
-        Transfer(_from, _to, _value);
+        emit Transfer(_from, _to, _value);
     }
 
     // setperate this function is for unit testing.
