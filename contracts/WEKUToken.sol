@@ -219,7 +219,7 @@ contract WEKUToken is Owned, TokenERC20 {
     }
 
     /// @notice batch assign tokens to users registered in airdrops
-    /// @param earlyBirds address[] format in wallet: ["address1", "address2", ...]
+    /// @param earlyBirds address[] format in wallet: 0x1111,0x2222
     /// @param amount without decimal amount: 10**18
     function assignToEarlyBirds(address[] earlyBirds, uint256 amount) onlyOwner public {
         require(amount > 0);
