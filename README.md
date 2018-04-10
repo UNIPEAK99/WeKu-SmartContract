@@ -1,7 +1,7 @@
 
 == Rinkeby ==
 
-Rinkeby network accounts password: Weku@2018
+Rinkeby network accounts password: 
 
 Main account (deployer/owner): 0x83B50968ca759aE17DB0DFC2104eeAEEB7907d0e
 
